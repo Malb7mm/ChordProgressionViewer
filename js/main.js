@@ -1,0 +1,1 @@
+import * as PIXI from "./lib/pixi.min.js";
