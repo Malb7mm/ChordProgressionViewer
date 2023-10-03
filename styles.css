@@ -1,0 +1,8 @@
+:root {
+    --col-example-white: #fff;
+    --col-transparent: #0000;
+}
+
+.inner {
+    max-width: 1000px;
+}
