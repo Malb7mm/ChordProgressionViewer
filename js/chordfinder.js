@@ -1,5 +1,5 @@
 class Chord {
-    static NOTE_VALUES = new Map()[
+    static NOTE_VALUES = new Map([
         ["C#", 1],
         ["D#", 3],
         ["F#", 6],
@@ -17,7 +17,7 @@ class Chord {
         ["G", 7],
         ["A", 9],
         ["B", 11]
-    ];
+    ]);
 
     constructor(components, root) {
         this.components = components;
@@ -31,3 +31,84 @@ class ChordName {
         this.priority = priority;
     }
 }
+
+class ChordFinder {
+    static NOTE_ALIASES = {
+        "ド": "C",
+        "レ": "D",
+        "ミ": "E",
+        "ファ": "F",
+        "ソ": "G",
+        "ラ": "A",
+        "シ": "B",
+
+        "ど": "C",
+        "れ": "D",
+        "み": "E",
+        "ふぁ": "F",
+        "そ": "G",
+        "ら": "A",
+        "し": "B",
+        
+        "イ": "C",
+        "ロ": "D",
+        "ハ": "E",
+        "ニ": "F",
+        "ホ": "G",
+        "ヘ": "A",
+        "ト": "B",
+
+        "い": "C",
+        "ろ": "D",
+        "は": "E",
+        "に": "F",
+        "ほ": "G",
+        "へ": "A",
+        "と": "B",
+    };
+    static SHARP_ALIASES = ["♯"];
+    static FLAT_ALIASES = ["♭"];
+
+    constructor() {
+    }
+
+    static parse(str) {
+        var components = new Set();
+        var root;
+
+        console.log(str);
+        console.log(ChordFinder.SHARP_ALIASES);
+
+        for (var [key, value] of Object.entries(ChordFinder.NOTE_ALIASES))
+            str = str.replace(key, value);
+        for (var value of ChordFinder.SHARP_ALIASES) 
+            str = str.replace(value, "#");
+        for (var value of ChordFinder.FLAT_ALIASES)
+            str = str.replace(value, "b");
+
+        console.log(str);
+
+        strLoop: while (str.length > 0) {
+            for (var [key, value] of Chord.NOTE_VALUES.entries()) {
+                if (str.startsWith(key)) {
+                    components.add(value);
+                    if (root === undefined)
+                        root = value;
+                    str = str.substring(key.length);
+                    continue strLoop;
+                }
+            }
+            str = str.substring(1);
+        }
+
+        return new Chord(components, root);
+    }
+
+    static find(str) {
+        
+    }
+}
+
+window.ChordFinder = ChordFinder; // デバッグ用
+
+export {Chord, ChordName, ChordFinder}
