@@ -10,14 +10,14 @@
 
 #### 定数
 
-- (object) NOTE_VALUE
+- (object) NOTE_VALUES
   - C、C#、D、D#、E、F、F#、G、G#、A、A#、Bの十二要素
   - 音名に対して、0～11のいずれかの値が定義されている
   - 音名C、C#、D……がそれぞれ0、1、2……の整数値に対応する
 
 #### インスタンス変数
 
-- (number array) components
+- (number Set) components
   - コードの構成音
 - (number) root
   - コードのルート音
