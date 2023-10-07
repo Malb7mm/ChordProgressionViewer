@@ -76,17 +76,12 @@ class ChordFinder {
         var components = new Set();
         var root;
 
-        console.log(str);
-        console.log(ChordFinder.SHARP_ALIASES);
-
         for (var [key, value] of Object.entries(ChordFinder.NOTE_ALIASES))
             str = str.replace(key, value);
         for (var value of ChordFinder.SHARP_ALIASES) 
             str = str.replace(value, "#");
         for (var value of ChordFinder.FLAT_ALIASES)
             str = str.replace(value, "b");
-
-        console.log(str);
 
         strLoop: while (str.length > 0) {
             for (var [key, value] of Chord.NOTE_VALUES.entries()) {
