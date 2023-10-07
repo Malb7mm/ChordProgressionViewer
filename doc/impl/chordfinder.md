@@ -53,3 +53,4 @@
 - find( (Chord) chord )
   - 返り値：(ChordName array) コードネームの配列
   - 渡されたコード構成音とルート音から、該当する全てのコードネームの配列を返す
+  - [アルゴリズム詳細](./chordfinder.find.md)
