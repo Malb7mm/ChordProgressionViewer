@@ -24,3 +24,10 @@ class Chord {
         this.root = root;
     }
 }
+
+class ChordName {
+    constructor(name, priority) {
+        this.name = name;
+        this.priority = priority;
+    }
+}
