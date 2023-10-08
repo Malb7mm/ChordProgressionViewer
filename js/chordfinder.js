@@ -86,6 +86,7 @@ class ChordFinder {
 
     static PRIORITY = {
         "omit": 2,
+        "5": -1,
         "sus2": 1,
         "m": 0,
         "M": 0,
@@ -387,8 +388,16 @@ class ChordFinder {
                     }
 
                     if (components.size == 0) {
-                        var completeName = c[0].replace("--", "").replace("__", tensionName) + onCode;
-                        var priority = c[2] + tensionPriority + onCodePriority;
+                        // パワーコード判定
+                        if (chord.components.has(getNote(root, 7))
+                         && chord.components.size == 2) {
+                            var completeName = c[0].replace("--", "").replace("__", "").replace("(omit3)", "5") + onCode;
+                            var priority = c[2] + P["5"] + onCodePriority;
+                        }
+                        else {
+                            var completeName = c[0].replace("--", "").replace("__", tensionName) + onCode;
+                            var priority = c[2] + tensionPriority + onCodePriority;
+                        }
                         results.push(new ChordName(completeName, priority));
                     }
                 }
