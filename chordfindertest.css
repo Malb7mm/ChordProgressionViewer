@@ -11,3 +11,7 @@
 #result {
     margin-top: 20px;
 }
+
+#result * {
+    padding-left: 25px;
+}
