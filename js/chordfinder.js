@@ -492,11 +492,13 @@ class ChordFinder {
                 break;
             }
         }
-        for (var [key, value] of NUM.entries()) {
-            if (chordName.endsWith(key)) {
-                var degree = DEG.get(shift(value, songKey));
-                degreeName = degreeName.slice(0, -key.length) + degree;
-                break;
+        if (chordName.includes("/")) {
+            for (var [key, value] of NUM.entries()) {
+                if (chordName.endsWith(key)) {
+                    var degree = DEG.get(shift(value, songKey));
+                    degreeName = degreeName.slice(0, -key.length) + degree;
+                    break;
+                }
             }
         }
 
