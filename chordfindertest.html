@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>コード名逆引き</title>
+	<meta charset="UTF-8">
+    <meta name="description" content=""/>
+
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="chordfindertest.css?3">
+</head>
+<body>
+    <div class="inner">
+        <h1>コード名逆引きするやつ</h1>
+        <p>入力例：「CEG」「D#F#A#C#」「ミソシ」とか</p>
+        <div style="display: flex;">
+            <input type="text" id="chordinput" size="50" oninput="reflesh()">
+            <select id="keyinput"  oninput="reflesh()">
+                <option value="0">C</option>
+                <option value="1">D♭</option>
+                <option value="2">D</option>
+                <option value="3">E♭</option>
+                <option value="4">E</option>
+                <option value="5">F</option>
+                <option value="6">G♭</option>
+                <option value="7">G</option>
+                <option value="8">A♭</option>
+                <option value="9">A</option>
+                <option value="10">B♭</option>
+                <option value="11">B</option>
+            </select>
+        </div>
+
+        <table id="result">
+            <tr>
+                <th>優先度</th>
+                <th>コード名</th>
+                <th>ディグリー</th>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="module" src="js/chordfindertest.js?3"></script>
+</body>
+</html>

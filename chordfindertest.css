@@ -1,0 +1,17 @@
+:root {
+    --col-example-white: #fff;
+    --col-transparent: #0000;
+}
+
+.inner {
+    max-width: 1000px;
+    padding: 20px 20px;
+}
+
+#result {
+    margin-top: 20px;
+}
+
+#result * {
+    padding-left: 25px;
+}

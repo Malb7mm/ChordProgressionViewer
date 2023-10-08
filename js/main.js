@@ -1,1 +1,1 @@
-import * as PIXI from "./lib/pixi.min.js";
+import {Chord, ChordName, ChordFinder} from "./chordfinder.js?3";
