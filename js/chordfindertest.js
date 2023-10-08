@@ -1,4 +1,4 @@
-import {Chord, ChordName, ChordFinder} from "./chordfinder.js?4";
+import {Chord, ChordName, ChordFinder} from "./chordfinder.js?5";
 
 export function reflesh() {
     var chordInput = $("#chordinput").val();
