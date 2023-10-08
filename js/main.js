@@ -1,1 +1,1 @@
-import {Chord, ChordName, ChordFinder} from "./chordfinder.js?3";
+import {Chord, ChordName, ChordFinder} from "./chordfinder.js?4";
