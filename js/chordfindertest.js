@@ -9,7 +9,7 @@ export function reflesh() {
         if (i > 0) e.remove();
     });
     for (var chordName of chordNames) {
-        $(`<tr><td>${chordName.priority}</td><td>${chordName.name}</td><td>${ChordFinder.degree(chordName.name, keyInput)}</td></tr>`).appendTo($("#result").children());
+        $(`<tr><td>${chordName.priority}</td><td>${chordName.name}</td><td>${ChordFinder.degree(chordName.name, parseInt(keyInput))}</td></tr>`).appendTo($("#result").children());
     }
 }
 
