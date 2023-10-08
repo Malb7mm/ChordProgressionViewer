@@ -1,4 +1,18 @@
 class Chord {
+    constructor(components, root) {
+        this.components = components;
+        this.root = root;
+    }
+}
+
+class ChordName {
+    constructor(name, priority) {
+        this.name = name;
+        this.priority = priority;
+    }
+}
+
+class ChordFinder {
     static NOTE_VALUES = new Map([
         ["C#", 1],
         ["D#", 3],
@@ -19,35 +33,36 @@ class Chord {
         ["B", 11]
     ]);
 
-    static NOTE_NAMES = new Map([
+    static NOTE_NAMES_SHARP = new Map([
         [0, "C"],
-        [1, "C#"],
+        [1, "C♯"],
         [2, "D"],
-        [3, "D#"],
+        [3, "D♯"],
         [4, "E"],
         [5, "F"],
-        [6, "F#"],
+        [6, "F♯"],
         [7, "G"],
-        [8, "G#"],
+        [8, "G♯"],
         [9, "A"],
-        [10, "A#"],
+        [10, "A♯"],
         [11, "B"]
     ]);
 
-    constructor(components, root) {
-        this.components = components;
-        this.root = root;
-    }
-}
+    static NOTE_NAMES_FLAT = new Map([
+        [0, "C"],
+        [1, "D♭"],
+        [2, "D"],
+        [3, "E♭"],
+        [4, "E"],
+        [5, "F"],
+        [6, "G♭"],
+        [7, "G"],
+        [8, "A♭"],
+        [9, "A"],
+        [10, "B♭"],
+        [11, "B"]
+    ]);
 
-class ChordName {
-    constructor(name, priority) {
-        this.name = name;
-        this.priority = priority;
-    }
-}
-
-class ChordFinder {
     static NOTE_ALIASES = {
         "ド": "C",
         "レ": "D",
@@ -117,14 +132,14 @@ class ChordFinder {
         var root;
 
         for (var [key, value] of Object.entries(ChordFinder.NOTE_ALIASES))
-            str = str.replace(key, value);
+            str = str.replaceAll(key, value);
         for (var value of ChordFinder.SHARP_ALIASES) 
-            str = str.replace(value, "#");
+            str = str.replaceAll(value, "#");
         for (var value of ChordFinder.FLAT_ALIASES)
-            str = str.replace(value, "b");
+            str = str.replaceAll(value, "b");
 
         strLoop: while (str.length > 0) {
-            for (var [key, value] of Chord.NOTE_VALUES.entries()) {
+            for (var [key, value] of ChordFinder.NOTE_VALUES.entries()) {
                 if (str.startsWith(key)) {
                     components.add(value);
                     if (root === undefined)
@@ -172,7 +187,7 @@ class ChordFinder {
         var majAlready = new Set(); // メジャーコードの重複対策
 
         let getCandiName = (root, delta, omit = false, minorflat5 = false) => {
-            var rootName = Chord.NOTE_NAMES.get(root);
+            var rootName = ChordFinder.NOTE_NAMES_FLAT.get(root);
 
             var chordName = "";
             if (delta == 2)
@@ -319,7 +334,7 @@ class ChordFinder {
                 var tensionName;
                 var tensionPriority;
 
-                var onCode = (root == chord.root) ? "" : "/" + Chord.NOTE_NAMES.get(chord.root);
+                var onCode = (root == chord.root) ? "" : "/" + ChordFinder.NOTE_NAMES_FLAT.get(chord.root);
                 var onCodePriority = (root == chord.root) ? 0 : P["on"];
 
                 // 6, 7, M7
@@ -362,7 +377,7 @@ class ChordFinder {
                     }
 
                     if (components.size == 0) {
-                        var completeName = c[0].replace("--", seventhName).replace("__", tensionName) + onCode;
+                        var completeName = c[0].replaceAll("--", seventhName).replaceAll("__", tensionName) + onCode;
                         var priority = c[2] + tensionPriority + onCodePriority;
                         results.push(new ChordName(completeName, priority));
                     }
@@ -391,11 +406,11 @@ class ChordFinder {
                         // パワーコード判定
                         if (chord.components.has(getNote(root, 7))
                          && chord.components.size == 2) {
-                            var completeName = c[0].replace("--", "").replace("__", "").replace("(omit3)", "5") + onCode;
+                            var completeName = c[0].replaceAll("--", "").replaceAll("__", "").replaceAll("(omit3)", "5") + onCode;
                             var priority = c[2] + P["5"] + onCodePriority;
                         }
                         else {
-                            var completeName = c[0].replace("--", "").replace("__", tensionName) + onCode;
+                            var completeName = c[0].replaceAll("--", "").replaceAll("__", tensionName) + onCode;
                             var priority = c[2] + tensionPriority + onCodePriority;
                         }
                         results.push(new ChordName(completeName, priority));
@@ -415,7 +430,7 @@ class ChordFinder {
                  && components.has(getNote(root, 9))
                  && components.size == 2) {
 
-                    var completeName = c[0].replace("--", "dim7").replace("__", "").replace("(♭5)", "").replace("(omit3)", "") + onCode;
+                    var completeName = c[0].replaceAll("--", "dim7").replaceAll("__", "").replaceAll("(♭5)", "").replaceAll("(omit3)", "") + onCode;
                     var priority = c[2] + P["dim7"] + onCodePriority;
                     results.push(new ChordName(completeName, priority));
                 }
@@ -431,6 +446,61 @@ class ChordFinder {
         }
 
         return results;
+    }
+
+    static degree(chordName, songKey) {
+        const NUM = new Map([
+            ["D♭",1],
+            ["E♭",3],
+            ["G♭",6],
+            ["A♭",8],
+            ["B♭",10],
+            ["C",0],
+            ["D",2],
+            ["E",4],
+            ["F",5],
+            ["G",7],
+            ["A",9],
+            ["B",11]
+        ]);
+        const DEG = new Map([
+            [0,"Ⅰ"],
+            [1,"♭Ⅱ"],
+            [2,"Ⅱ"],
+            [3,"♭Ⅲ"],
+            [4,"Ⅲ"],
+            [5,"Ⅳ"],
+            [6,"♭Ⅴ"],
+            [7,"Ⅴ"],
+            [8,"♭Ⅵ"],
+            [9,"Ⅵ"],
+            [10,"♭Ⅶ"],
+            [11,"Ⅶ"]
+        ]);
+
+        let shift = (note, songKey) => {
+            var n = note + songKey;
+            return n % 12;
+        };
+
+        var degreeName = chordName;
+
+        for (var [key, value] of NUM.entries()) {
+            if (chordName.startsWith(key)) {
+                var degree = DEG.get(shift(value, songKey));
+                degreeName = degree + degreeName.slice(key.length);
+                break;
+            }
+        }
+        for (var [key, value] of NUM.entries()) {
+            if (chordName.endsWith(key)) {
+                var degree = DEG.get(shift(value, songKey));
+                degreeName = degreeName.slice(0, -key.length) + degree;
+                break;
+            }
+        }
+
+        return degreeName;
     }
 }
 
