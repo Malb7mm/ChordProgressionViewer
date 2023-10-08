@@ -479,7 +479,7 @@ class ChordFinder {
         ]);
 
         let shift = (note, key) => {
-            var n = note + key;
+            var n = note + (12 - key);
             return n % 12;
         };
 
